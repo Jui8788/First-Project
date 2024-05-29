@@ -48,7 +48,7 @@ const createStudentValidationSchema = z.object({
           return { message: 'Gender is required' }
         },
       }),
-      dateOfBirth: z.string().trim().optional(),
+      dateOfBirth: z.string().optional(),
       email: z
         .string()
         .trim()
@@ -70,6 +70,7 @@ const createStudentValidationSchema = z.object({
       guardian: guardianValidationSchema,
       localGuardian: localGuardianValidationSchema,
       profileImg: z.string().trim().optional(),
+      admissionSemester: z.string(),
     }),
   }),
 })

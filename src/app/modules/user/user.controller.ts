@@ -5,10 +5,10 @@ import catchAsync from '../../utils/catchAsync'
 
 const createStudent = catchAsync(async (req, res) => {
   // creating a schema validation using Zod
-  const { password, student: studentData } = req.body
+  const { password, student: payload } = req.body
 
   // will call service function to send this data
-  const result = await UserServices.createStudentIntoDB(password, studentData)
+  const result = await UserServices.createStudentIntoDB(password, payload)
 
   // send response
   sendResponse(res, {
