@@ -8,7 +8,9 @@ const globalErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   next: NextFunction,
 ) => {
-  return res.status(500).json({
+  const statusCode = error.statusCode || 500
+
+  return res.status(statusCode).json({
     success: false,
     message: error.message || 'Something went wrong',
     error: error,
