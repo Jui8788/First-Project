@@ -13,6 +13,14 @@ router.post(
   SemesterRegistrationControllers.createSemesterRegistration,
 )
 
+router.patch(
+  '/:id',
+  validateRequest(
+    SemesterRegistrationValidations.updateSemesterRegistrationValidationSchema,
+  ),
+  SemesterRegistrationControllers.updateSemesterRegistration,
+)
+
 router.get('/', SemesterRegistrationControllers.getAllSemesterRegistrations)
 
 router.get(
