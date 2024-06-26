@@ -21,6 +21,8 @@ const validateRequest = (schema: AnyZodObject) => {
     await schema.parseAsync({
       body: req.body,
       cookies: req.cookies,
+      query: req.query,
+      params: req.params,
     })
 
     next()
