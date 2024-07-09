@@ -42,6 +42,7 @@ export type TStudent = {
   admissionSemester: Types.ObjectId
   isDeleted: boolean
   academicDepartment: Types.ObjectId
+  academicFaculty: Types.ObjectId
 }
 
 // ---->For Creating Static <----

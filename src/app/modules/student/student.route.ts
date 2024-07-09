@@ -9,18 +9,27 @@ const router = express.Router()
 
 // will call controller function
 
-router.get('/', StudentControllers.getAllStudents)
+router.get(
+  '/',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  StudentControllers.getAllStudents,
+)
 router.patch(
   '/:id',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(updateStudentValidationSchema),
   StudentControllers.updateStudent,
 )
 router.get(
   '/:id',
-  auth(USER_ROLE.admin, USER_ROLE.faculty),
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
   StudentControllers.getSingleStudent,
 )
 
-router.delete('/:id', StudentControllers.deleteStudent)
+router.delete(
+  '/:id',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  StudentControllers.deleteStudent,
+)
 
 export const StudentRoutes = router

@@ -99,12 +99,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     Student.find()
       .populate('user')
       .populate('admissionSemester')
-      .populate({
-        path: 'academicDepartment',
-        populate: {
-          path: 'academicFaculty',
-        },
-      }),
+      .populate('academicDepartment academicFaculty'),
     query,
   )
     .search(studentSearchableFields)
@@ -125,13 +120,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 const getSingleStudentFromDB = async (id: string) => {
   const result = await Student.findById(id)
     .populate('admissionSemester')
-    .populate({
-      path: 'academicDepartment',
-      populate: {
-        path: 'academicFaculty',
-      },
-    })
-  // const result = await Student.aggregate([{ $match: { id: id } }])
+    .populate('academicDepartment academicFaculty')
   return result
 }
 

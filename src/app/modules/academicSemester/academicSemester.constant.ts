@@ -37,3 +37,5 @@ export const academicSemesterNameCodeMapper: TAcademicSemesterNameCodeMapper = {
   Summer: '02',
   Fall: '03',
 } as const
+
+export const AcademicSemesterSearchableFields = ['name', 'year']

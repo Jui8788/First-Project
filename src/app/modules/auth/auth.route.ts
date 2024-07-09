@@ -14,21 +14,22 @@ router.post(
 )
 
 router.post('/change-password', (req, res, next) => {
-  auth(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student)(
-    req,
-    res,
-    (err) => {
-      if (err) return next(err)
-      validateRequest(AuthValidation.changePasswordValidationSchema)(
-        req,
-        res,
-        (err) => {
-          if (err) return next(err)
-          AuthControllers.changePassword(req, res, next)
-        },
-      )
-    },
-  )
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  )(req, res, (err) => {
+    if (err) return next(err)
+    validateRequest(AuthValidation.changePasswordValidationSchema)(
+      req,
+      res,
+      (err) => {
+        if (err) return next(err)
+        AuthControllers.changePassword(req, res, next)
+      },
+    )
+  })
 })
 
 router.post(

@@ -1,8 +1,9 @@
-import { Schema, model } from 'mongoose'
+/* eslint-disable @typescript-eslint/no-this-alias */
 import bcrypt from 'bcrypt'
-import { TUser, UserModel } from './user.interface'
+import { Schema, model } from 'mongoose'
 import config from '../../config'
 import { UserStatus } from './user.constant'
+import { TUser, UserModel } from './user.interface'
 
 const userSchema = new Schema<TUser, UserModel>(
   {
@@ -30,7 +31,7 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     role: {
       type: String,
-      enum: ['admin', 'student', 'faculty'],
+      enum: ['superAdmin', 'student', 'faculty', 'admin'],
     },
     status: {
       type: String,
@@ -42,18 +43,15 @@ const userSchema = new Schema<TUser, UserModel>(
       default: false,
     },
   },
-
   {
     timestamps: true,
   },
 )
 
-// pre-save middleware/hook: will work on create() / save()
 userSchema.pre('save', async function (next) {
-  // console.log(this, 'pre hook: We will save data')
   // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this //doc
-  // hashing password & save into db
+  const user = this // doc
+  // hashing password and save into DB
   user.password = await bcrypt.hash(
     user.password,
     Number(config.bcrypt_salt_rounds),
@@ -61,30 +59,16 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
-// post-save middleware/hook
+// set '' after saving password
 userSchema.post('save', function (doc, next) {
   doc.password = ''
   next()
 })
 
-// Define a static method to check if a user exists by custom ID
-userSchema.statics.isUserExistsByCustomId = async (id: string) => {
+userSchema.statics.isUserExistsByCustomId = async function (id: string) {
   return await User.findOne({ id }).select('+password')
 }
 
-// Define a static method to check if a user is deleted
-// userSchema.statics.isUserDeletedByCustomId = async function (id: string) {
-//   const user = await this.isUserExistsByCustomId(id)
-//   return user ? user.isDeleted : null
-// }
-
-// Define a static method to get the user status
-// userSchema.statics.getUserStatusByCustomId = async function (id: string) {
-//   const user = await this.isUserExistsByCustomId(id)
-//   return user ? user.status : null
-// }
-
-//   Define a static method to check if the password is correct
 userSchema.statics.isPasswordMatched = async function (
   plainTextPassword,
   hashedPassword,
